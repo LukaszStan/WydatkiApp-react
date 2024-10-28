@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "title": "Zakup spożywczy",
+    "amount": 150,
+    "category": "Jedzenie",
+    "date": "2024-04-10",
+    "description": "Zakup produktów w sklepie Lidl."
+  },
+  {
+    "id": 2,
+    "title": "Opłata za internet",
+    "amount": 80,
+    "category": "Rachunki",
+    "date": "2024-04-05",
+    "description": "Miesięczna opłata za internet."
+  },
+  {
+    "id": 3,
+    "title": "Bilet za koncert",
+    "amount": 200,
+    "category": "Rozrywka",
+    "date": "2024-03-25",
+    "description": "Bilet na koncert ulubionego zespołu."
+  }
+]
