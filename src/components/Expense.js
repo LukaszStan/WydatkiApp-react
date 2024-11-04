@@ -1,24 +1,30 @@
 import { FaRegTrashCan } from "react-icons/fa6";
-export default function Expense({id,title,amount,category,date,description,onDelete,onExpenseClick}){
+import { FaEdit } from "react-icons/fa";
+export default function Expense({title,amount,category,date,onDelete,onEdit,onExpenseClick}){
     return (
-        <tr onClick={() => onExpenseClick({id, title, amount, category, date, description})}>
+        <tr onClick={onExpenseClick}>
             <td>{title}</td>
             <td>{amount}</td>
             <td>{category}</td>
             <td>{date}</td>
             <td>
-                <FaRegTrashCan className="trash-icon" onClick={(e) => {
+                <FaEdit className="icon" onClick={(e) => {
                     e.stopPropagation();
-                    onDelete(id);
+                    onEdit();
                 }}/>
             </td>
-            <style jsx>{`
-                .trash-icon:hover {
+            <td>
+                <FaRegTrashCan className="icon" onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete();
+                }}/>
+            </td>
+            <style>{`
+                .icon:hover {
                     cursor: pointer;
                     color: #666;
                 }
             `}</style>
         </tr>
-
     );
 }

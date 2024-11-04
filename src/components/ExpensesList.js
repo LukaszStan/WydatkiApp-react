@@ -1,6 +1,6 @@
 import Expense from "./Expense";
 
-export default function ExpenseList({expenses = [], onDelete, onExpenseClick}){
+export default function ExpenseList({expenses = [], onDelete, onExpenseClick, onEditClick}){
     if(!expenses.length) return <div>Brak wydatków</div>
     return (
         <table>
@@ -14,8 +14,14 @@ export default function ExpenseList({expenses = [], onDelete, onExpenseClick}){
             </tr>
             </thead>
             <tbody>
-            {expenses.map((expense) => (
-                <Expense key={expense.id} {...expense} onDelete={onDelete} onExpenseClick={onExpenseClick}/>
+            {expenses.map(expense => (
+                <Expense
+                    key={expense.id}
+                    {...expense}
+                    onDelete={() => onDelete(expense.id)}
+                    onEdit={() => onEditClick(expense)}
+                    onExpenseClick={() => onExpenseClick(expense)}
+                />
             ))}
             </tbody>
         </table>

@@ -13,7 +13,7 @@ export default function ExpenseDetails({ expense, onClose }) {
                 <p><strong>Data:</strong> {expense.date}</p>
                 <p><strong>Opis:</strong> {expense.description}</p>
             </div>
-            <style jsx>{`
+            <style>{`
                 .modal-overlay {
                     position: fixed;
                     top: 0;
