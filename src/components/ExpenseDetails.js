@@ -1,5 +1,5 @@
 import { IoClose } from "react-icons/io5";
-export default function ExpenseDetails({ expense, onClose }) {
+export default function ExpenseDetails({ expense, onClose}) {
     if (!expense) return null;
 
     return (

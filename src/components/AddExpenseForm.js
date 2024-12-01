@@ -1,4 +1,6 @@
-import React from 'react'
+'use client';
+import React from 'react';
+import { useGlobalContext } from '../GlobalContext';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
@@ -7,16 +9,19 @@ const validationSchema = Yup.object({
     amount: Yup.number().positive("Kwota musi być dodatnia").required("Kwota jest wymagana"),
     category: Yup.string().required("Kategoria jest wymagana"),
     date: Yup.date().required("Data jest wymagana"),
-    description: Yup.string().max(200, "Opis może mieć maksymalnie 200 znaków")
+    description: Yup.string().max(200, "Opis może mieć maksymalnie 200 znaków"),
 });
 
-export default function AddExpenseForm({ onAddExpense, categories }){
+export default function AddExpenseForm() {
+    const { state, dispatch } = useGlobalContext();
+    const { categories } = state;
+
     const initialValues = {
         title: '',
         amount: '',
         category: '',
         date: '',
-        description: ''
+        description: '',
     };
 
     const handleSubmit = (values, { resetForm }) => {
@@ -24,11 +29,11 @@ export default function AddExpenseForm({ onAddExpense, categories }){
             ...values,
             id: Date.now(),
         };
-        onAddExpense(newExpense);
+        dispatch({ type: 'ADD_EXPENSE', payload: newExpense });
         resetForm();
     };
 
-    return(
+    return (
         <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
@@ -37,46 +42,38 @@ export default function AddExpenseForm({ onAddExpense, categories }){
             {({ dirty, isValid }) => (
                 <Form>
                     <div>
-                        <label>Tytuł</label>
+                        <label>Tytuł: </label>
                         <Field type="text" name="title" />
                         <ErrorMessage name="title" component="div" className="error" />
                     </div>
                     <div>
-                        <label>Kwota</label>
+                        <label>Kwota: </label>
                         <Field type="number" name="amount" />
                         <ErrorMessage name="amount" component="div" className="error" />
                     </div>
                     <div>
-                        <label>Kategoria</label>
+                        <label>Kategoria: </label>
                         <Field as="select" name="category">
                             <option value="">Wybierz kategorię</option>
                             {categories.map((category) => (
                                 <option key={category} value={category}>{category}</option>
                             ))}
                         </Field>
-                        <ErrorMessage name="category" component="div" className="error" />
+                        <ErrorMessage name="category" component="div" className="error"/>
                     </div>
                     <div>
-                        <label>Data</label>
+                        <label>Data: </label>
                         <Field type="date" name="date" />
                         <ErrorMessage name="date" component="div" className="error" />
                     </div>
                     <div>
-                        <label>Opis</label>
+                        <label>Opis: </label>
                         <Field as="textarea" name="description" />
                         <ErrorMessage name="description" component="div" className="error" />
                     </div>
                     <button type="submit" disabled={!dirty || !isValid}>Dodaj wydatek</button>
-                    <style>{`
-                        .error {
-                            color: red;
-                            font-size: 12px;
-                            margin-top: 4px;
-                        }
-                    `}</style>
                 </Form>
             )}
         </Formik>
-
     );
 }

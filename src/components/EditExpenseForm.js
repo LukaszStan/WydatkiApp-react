@@ -1,6 +1,11 @@
+'use client';
 import React, { useState } from "react";
+import { useGlobalContext } from "../GlobalContext";
 
-export default function EditExpenseForm({ expense, onSave, onCancel }){
+export default function EditExpenseForm({ expense, onCancel }){
+    const { state, dispatch } = useGlobalContext();
+    const { categories } = state;
+
     const [title, setTitle] = useState(expense.title);
     const [amount, setAmount] = useState(expense.amount);
     const [category, setCategory] = useState(expense.category);
@@ -75,7 +80,8 @@ export default function EditExpenseForm({ expense, onSave, onCancel }){
             description,
         };
 
-        onSave(updatedExpense);
+        dispatch({ type: "EDIT_EXPENSE", payload: updatedExpense });
+        onCancel();
     };
 
     return (
@@ -105,10 +111,9 @@ export default function EditExpenseForm({ expense, onSave, onCancel }){
                     onChange={(e) => handleChange('category', e.target.value)}
                 >
                     <option value="">Wybierz kategorię</option>
-                    <option value="Jedzenie">Jedzenie</option>
-                    <option value="Rachunki">Rachunki</option>
-                    <option value="Rozrywka">Rozrywka</option>
-                    <option value="Transport">Transport</option>
+                    {categories.map((category) => (
+                        <option key={category} value={category}>{category}</option>
+                    ))}
                 </select>
                 {errors.category && <div style={{ color: 'red' }}>{errors.category}</div>}
             </div>

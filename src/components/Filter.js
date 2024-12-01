@@ -1,14 +1,22 @@
-export default function Filter({ categories, selectedCategory, selectedDate, onCategoryChange, onDateChange }) {
+'use client';
+import React from 'react';
+import { useGlobalContext } from '../GlobalContext';
+
+export default function Filter() {
+    const { state, dispatch } = useGlobalContext();
+    const { categories, selectedCategory, selectedDate } = state;
+
     return (
         <div>
             <label>
                 Kategoria:
-                <select value={selectedCategory} onChange={(e) => onCategoryChange(e.target.value)}>
+                <select
+                    value={selectedCategory}
+                    onChange={(e) => dispatch({ type: 'SET_CATEGORY', payload: e.target.value })}
+                >
                     <option value="">Wszystkie</option>
-                    {categories.map((category) => (
-                        <option key={category} value={category}>
-                            {category}
-                        </option>
+                    {categories.map(category => (
+                        <option key={category} value={category}>{category}</option>
                     ))}
                 </select>
             </label>
@@ -17,7 +25,7 @@ export default function Filter({ categories, selectedCategory, selectedDate, onC
                 <input
                     type="date"
                     value={selectedDate}
-                    onChange={(e) => onDateChange(e.target.value)}
+                    onChange={(e) => dispatch({ type: 'SET_DATE', payload: e.target.value })}
                 />
             </label>
         </div>

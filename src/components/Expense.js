@@ -1,6 +1,9 @@
+'use client';
+import React from 'react';
 import { FaRegTrashCan } from "react-icons/fa6";
-import { FaEdit } from "react-icons/fa";
-export default function Expense({title,amount,category,date,onDelete,onEdit,onExpenseClick}){
+import {FaEdit} from "react-icons/fa";
+
+export default function Expense({title, amount, category, date, onDelete, onEdit, onExpenseClick}) {
     return (
         <tr onClick={onExpenseClick}>
             <td>{title}</td>
