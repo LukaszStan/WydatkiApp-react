@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { useGlobalContext } from '../GlobalContext';
+import { useGlobalContext } from '../providers/GlobalContext';
 
 export default function Filter() {
     const { state, dispatch } = useGlobalContext();

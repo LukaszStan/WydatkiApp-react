@@ -1,6 +1,6 @@
 'use client';
 import React, { useState } from "react";
-import { useGlobalContext } from "../GlobalContext";
+import { useGlobalContext } from "../providers/GlobalContext";
 
 export default function EditExpenseForm({ expense, onCancel }){
     const { state, dispatch } = useGlobalContext();

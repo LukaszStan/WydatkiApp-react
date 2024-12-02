@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { useGlobalContext } from '../GlobalContext';
+import { useGlobalContext } from '../providers/GlobalContext';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 

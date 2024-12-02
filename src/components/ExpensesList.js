@@ -1,6 +1,6 @@
 'use client';
 import React, { useLayoutEffect, useRef, useEffect, useState  } from 'react';
-import { useGlobalContext } from '../GlobalContext';
+import { useGlobalContext } from '../providers/GlobalContext';
 import Expense from "./Expense";
 import ExpenseDetails from "./ExpenseDetails";
 import EditExpenseForm from "./EditExpenseForm";

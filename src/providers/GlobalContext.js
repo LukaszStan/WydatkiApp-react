@@ -1,6 +1,6 @@
 'use client';
 import React, { createContext, useContext, useReducer, useEffect } from "react";
-import expensesData from './data/expenses-data.json';
+import expensesData from '../data/expenses-data.json';
 
 const GlobalContext = createContext();
 

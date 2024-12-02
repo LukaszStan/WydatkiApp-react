@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect } from 'react';
-import { useGlobalContext } from '../GlobalContext';
+import { useGlobalContext } from '../providers/GlobalContext';
 
 export default function NotificationSystem() {
     const { state, dispatch } = useGlobalContext();
