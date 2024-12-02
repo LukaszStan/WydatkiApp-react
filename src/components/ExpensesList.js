@@ -1,60 +1,26 @@
 'use client';
-import React, { useLayoutEffect, useRef, useEffect, useState  } from 'react';
+
+import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import { useGlobalContext } from '../providers/GlobalContext';
-import Expense from "./Expense";
-import ExpenseDetails from "./ExpenseDetails";
-import EditExpenseForm from "./EditExpenseForm";
+import Expense from './Expense';
+import ExpenseDetails from './ExpenseDetails';
+import EditExpenseForm from './EditExpenseForm';
 
-export default function ExpenseList() {
-    const { state, dispatch } = useGlobalContext();
-    const { expenses, selectedCategory, selectedDate, selectedExpense } = state;
-
+export default function ExpensesList() {
+    const { expenses, selectedCategory, selectedDate, selectedExpense, selectExpense, deleteExpense, clearSelectedExpense} = useGlobalContext();
     const [filteredExpenses, setFilteredExpenses] = useState(expenses);
     const [editingExpense, setEditingExpense] = useState(null);
-
-    useEffect(() => {
-        const totalExpenses = expenses.reduce((sum, expense) => sum + parseFloat(expense.amount), 0);
-        if (totalExpenses > 5000) {
-            dispatch({
-                type: 'ADD_NOTIFICATION',
-                payload: 'Uwaga! Przekroczyłeś budżet 5000 zł!',
-            });
-        }
-
-        const largeExpense = expenses.find(expense => parseFloat(expense.amount) > 1000);
-        if (largeExpense) {
-            dispatch({
-                type: 'ADD_NOTIFICATION',
-                payload: `Duży wydatek: ${largeExpense.title} za ${largeExpense.amount} zł.`,
-            });
-        }
-    }, [expenses, dispatch]);
+    const tableRef = useRef(null);
 
     useEffect(() => {
         const filterExpenses = () => {
-            return expenses.filter(expense => {
+            return expenses.filter((expense) => {
                 if (selectedCategory && expense.category !== selectedCategory) return false;
                 return !(selectedDate && expense.date !== selectedDate);
             });
         };
         setFilteredExpenses(filterExpenses());
     }, [expenses, selectedCategory, selectedDate]);
-
-    const handleExpenseClick = (expense) => {
-        dispatch({ type: 'SET_SELECTED_EXPENSE', payload: expense });
-    };
-
-    const handleCloseModal = () => {
-        dispatch({ type: 'CLEAR_SELECTED_EXPENSE' });
-    };
-
-    const tableRef = useRef(null);
-
-    useLayoutEffect(() => {
-        if (tableRef.current) {
-            tableRef.current.scrollTop = tableRef.current.scrollHeight;
-        }
-    }, [expenses]);
 
     const handleEdit = (expense) => {
         setEditingExpense(expense);
@@ -63,6 +29,12 @@ export default function ExpenseList() {
     const handleCancelEdit = () => {
         setEditingExpense(null);
     };
+
+    useLayoutEffect(() => {
+        if (tableRef.current) {
+            tableRef.current.scrollTop = tableRef.current.scrollHeight;
+        }
+    }, [expenses]);
 
     if (editingExpense) {
         return <EditExpenseForm expense={editingExpense} onCancel={handleCancelEdit} />;
@@ -83,19 +55,19 @@ export default function ExpenseList() {
                 </tr>
                 </thead>
                 <tbody>
-                {filteredExpenses.map(expense => (
+                {filteredExpenses.map((expense) => (
                     <Expense
                         key={expense.id}
                         {...expense}
-                        onDelete={() => dispatch({ type: 'DELETE_EXPENSE', payload: expense.id })}
+                        onDelete={() => deleteExpense(expense.id)}
                         onEdit={() => handleEdit(expense)}
-                        onExpenseClick={() => handleExpenseClick(expense)}
+                        onExpenseClick={() => selectExpense(expense)}
                     />
                 ))}
                 </tbody>
             </table>
             {selectedExpense && (
-                <ExpenseDetails expense={selectedExpense} onClose={handleCloseModal} />
+                <ExpenseDetails expense={selectedExpense} onClose={clearSelectedExpense}/>
             )}
         </div>
     );

@@ -1,62 +1,69 @@
 'use client';
-import React, { createContext, useContext, useReducer, useEffect } from "react";
+
+import React, { createContext, useContext, useState, useEffect } from 'react';
 import expensesData from '../data/expenses-data.json';
 
 const GlobalContext = createContext();
 
-const initialState = {
-    expenses: [],
-    categories: ["Jedzenie", "Rachunki", "Rozrywka", "Transport"],
-    selectedCategory: "",
-    selectedDate: "",
-    selectedExpense: null,
-    notifications: [],
-};
+export const useGlobalContext = () => useContext(GlobalContext);
 
-const reducer = (state, action) => {
-    switch (action.type) {
-        case 'SET_EXPENSES':
-            return { ...state, expenses: action.payload };
-        case 'ADD_EXPENSE':
-            return { ...state, expenses: [action.payload, ...state.expenses] };
-        case 'DELETE_EXPENSE':
-            return { ...state, expenses: state.expenses.filter(exp => exp.id !== action.payload) };
-        case 'EDIT_EXPENSE':
-            return {
-                ...state,
-                expenses: state.expenses.map(exp =>
-                    exp.id === action.payload.id ? action.payload : exp
-                ),
-            };
-        case 'SET_CATEGORY':
-            return { ...state, selectedCategory: action.payload };
-        case 'SET_DATE':
-            return { ...state, selectedDate: action.payload };
-        case 'SET_SELECTED_EXPENSE':
-            return { ...state, selectedExpense: action.payload };
-        case 'CLEAR_SELECTED_EXPENSE':
-            return { ...state, selectedExpense: null };
-        case 'ADD_NOTIFICATION':
-            return { ...state, notifications: [action.payload, ...state.notifications] };
-        case 'CLEAR_NOTIFICATIONS':
-            return { ...state, notifications: [] };
-        default:
-            throw new Error(`Unhandled action type: ${action.type}`);
-    }
-};
-
-export const GlobalProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+export const categories = ["Jedzenie", "Rachunki", "Rozrywka", "Transport"];
+export default function GlobalProvider({ children }) {
+    const [expenses, setExpenses] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedExpense, setSelectedExpense] = useState(null);
+    const [notifications, setNotifications] = useState([]);
 
     useEffect(() => {
-        dispatch({ type: 'SET_EXPENSES', payload: expensesData });
+        setExpenses(expensesData);
     }, []);
 
+    const addExpense = (expense) =>
+        setExpenses([...expenses, expense]);
+
+    const editExpense = (id, updatedExpense) =>
+        setExpenses(
+            expenses.map((expense) =>
+                expense.id === id
+                    ? { ...expense, ...updatedExpense, isEditing: false }
+                    : expense
+            )
+        );
+
+    const deleteExpense = (id) =>
+        setExpenses(expenses.filter((expense) => expense.id !== id));
+
+    const selectExpense = (expense) => setSelectedExpense(expense);
+
+    const clearSelectedExpense = () => setSelectedExpense(null);
+
+    const setCategory = (category) => setSelectedCategory(category);
+
+    const setDate = (date) => setSelectedDate(date);
+
+    const addNotification = (message) =>
+        setNotifications([...notifications, message]);
+
     return (
-        <GlobalContext.Provider value={{ state, dispatch }}>
+        <GlobalContext.Provider
+            value={{
+                expenses,
+                selectedCategory,
+                selectedDate,
+                selectedExpense,
+                notifications,
+                addExpense,
+                editExpense,
+                deleteExpense,
+                selectExpense,
+                clearSelectedExpense,
+                setCategory,
+                setDate,
+                addNotification,
+            }}
+        >
             {children}
         </GlobalContext.Provider>
     );
-};
-
-export const useGlobalContext = () => useContext(GlobalContext);
+}

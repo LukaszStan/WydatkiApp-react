@@ -1,5 +1,5 @@
 'use client';
-import { GlobalProvider } from './providers/GlobalContext';
+import GlobalProvider from './providers/GlobalContext';
 import ExpenseList from "./components/ExpensesList";
 import ExpenseDetails from "./components/ExpenseDetails";
 import AddExpenseForm from "./components/AddExpenseForm";

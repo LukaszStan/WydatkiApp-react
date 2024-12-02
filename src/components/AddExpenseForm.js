@@ -1,8 +1,9 @@
 'use client';
 import React from 'react';
-import { useGlobalContext } from '../providers/GlobalContext';
+import { useGlobalContext, categories } from '../providers/GlobalContext';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { v4 as uuidv4 } from 'uuid';
 
 const validationSchema = Yup.object({
     title: Yup.string().min(3, "Tytuł musi mieć co najmniej 3 znaki").required("Tytuł jest wymagany"),
@@ -13,23 +14,17 @@ const validationSchema = Yup.object({
 });
 
 export default function AddExpenseForm() {
-    const { state, dispatch } = useGlobalContext();
-    const { categories } = state;
+    const { addExpense } = useGlobalContext();
 
     const initialValues = {
         title: '',
         amount: '',
         category: '',
         date: '',
-        description: '',
     };
 
     const handleSubmit = (values, { resetForm }) => {
-        const newExpense = {
-            ...values,
-            id: Date.now(),
-        };
-        dispatch({ type: 'ADD_EXPENSE', payload: newExpense });
+        addExpense({ id: uuidv4(), ...values });
         resetForm();
     };
 

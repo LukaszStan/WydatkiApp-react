@@ -1,32 +1,33 @@
-'use client';
 import React from 'react';
-import { useGlobalContext } from '../providers/GlobalContext';
+import { useGlobalContext, categories } from '../providers/GlobalContext';
 
 export default function Filter() {
-    const { state, dispatch } = useGlobalContext();
-    const { categories, selectedCategory, selectedDate } = state;
+    const { setCategory, setDate} = useGlobalContext();
+
+    const handleCategoryChange = (event) => {
+        setCategory(event.target.value);
+    };
+
+    const handleDateChange = (event) => {
+        setDate(event.target.value);
+    };
 
     return (
-        <div>
+        <div className="filter">
             <label>
                 Kategoria:
-                <select
-                    value={selectedCategory}
-                    onChange={(e) => dispatch({ type: 'SET_CATEGORY', payload: e.target.value })}
-                >
+                <select onChange={handleCategoryChange} defaultValue="">
                     <option value="">Wszystkie</option>
-                    {categories.map(category => (
-                        <option key={category} value={category}>{category}</option>
+                    {categories.map((category) => (
+                        <option key={category} value={category}>
+                            {category}
+                        </option>
                     ))}
                 </select>
             </label>
             <label>
                 Data:
-                <input
-                    type="date"
-                    value={selectedDate}
-                    onChange={(e) => dispatch({ type: 'SET_DATE', payload: e.target.value })}
-                />
+                <input type="date" onChange={handleDateChange} />
             </label>
         </div>
     );
