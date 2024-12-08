@@ -24,44 +24,53 @@ export default function EditExpenseForm({ expense, onCancel }){
             initialValues={expense}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
-        > {({ dirty, isValid }) => (
-            <Form>
-                <div>
-                    <label>Tytuł: </label>
-                    <Field type="text" name="title"/>
-                    <ErrorMessage name="title" component="div" className="error"/>
-                </div>
-                <div>
-                    <label>Kwota: </label>
-                    <Field type="number" name="amount"/>
-                    <ErrorMessage name="amount" component="div" className="error"/>
-                </div>
-                <div>
-                    <label>Kategoria: </label>
-                    <Field as="select" name="category">
-                        <option value="">Wybierz kategorię</option>
-                        {categories.map((category) => (
-                            <option key={category} value={category}>{category}</option>
-                        ))}
-                    </Field>
-                    <ErrorMessage name="category" component="div" className="error"/>
-                </div>
-                <div>
-                    <label>Data: </label>
-                    <Field type="date" name="date"/>
-                    <ErrorMessage name="date" component="div" className="error"/>
-                </div>
-                <div>
-                    <label>Opis: </label>
-                    <Field as="textarea" name="description"/>
-                    <ErrorMessage name="description" component="div" className="error"/>
-                </div>
-                <button type="submit" disabled={!dirty || !isValid}>Zapisz zmiany</button>
-                <button type="button" onClick={onCancel}>
-                    Anuluj
-                </button>
-            </Form>
-        )}
+        >
+            {({ dirty, isValid }) => (
+                <Form>
+                    <div>
+                        <div>
+                            <label>Tytuł: </label>
+                            <Field type="text" name="title" />
+                            <ErrorMessage name="title" component="div" className="error" />
+                        </div>
+                        <div>
+                            <label>Kwota: </label>
+                            <Field type="number" name="amount" />
+                            <ErrorMessage name="amount" component="div" className="error" />
+                        </div>
+                        <div>
+                            <label>Kategoria: </label>
+                            <Field as="select" name="category">
+                                <option value="">Wybierz kategorię</option>
+                                {categories.map((category) => (
+                                    <option key={category} value={category}>
+                                        {category}
+                                    </option>
+                                ))}
+                            </Field>
+                            <ErrorMessage name="category" component="div" className="error" />
+                        </div>
+                        <div>
+                            <label>Data: </label>
+                            <Field type="date" name="date" />
+                            <ErrorMessage name="date" component="div" className="error" />
+                        </div>
+                        <div>
+                            <label>Opis: </label>
+                            <Field as="textarea" name="description" />
+                            <ErrorMessage name="description" component="div" className="error" />
+                        </div>
+                        <div>
+                            <button type="submit" disabled={!dirty || !isValid}>
+                                Zapisz zmiany
+                            </button>
+                            <button type="button" onClick={onCancel}>
+                                Anuluj
+                            </button>
+                        </div>
+                    </div>
+                </Form>
+            )}
         </Formik>
     );
 }
