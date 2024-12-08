@@ -5,9 +5,17 @@ import { useGlobalContext } from '../providers/GlobalContext';
 import Expense from './Expense';
 import ExpenseDetails from './ExpenseDetails';
 import EditExpenseForm from './EditExpenseForm';
+import Pagination from "./Pagination";
 
 export default function ExpensesList() {
-    const { expenses, selectedCategory, selectedDate, selectedExpense, selectExpense, deleteExpense, clearSelectedExpense} = useGlobalContext();
+    const { paginatedExpenses,
+        selectedCategory,
+        selectedDate,
+        selectedExpense,
+        selectExpense,
+        deleteExpense,
+        clearSelectedExpense,
+        expenses } = useGlobalContext();
     const [filteredExpenses, setFilteredExpenses] = useState(expenses);
     const [editingExpense, setEditingExpense] = useState(null);
     const tableRef = useRef(null);
@@ -30,6 +38,10 @@ export default function ExpensesList() {
         setEditingExpense(null);
     };
 
+    const handleDelete = async (id) => {
+        await deleteExpense(id);
+    };
+
     useLayoutEffect(() => {
         if (tableRef.current) {
             tableRef.current.scrollTop = tableRef.current.scrollHeight;
@@ -40,7 +52,7 @@ export default function ExpensesList() {
         return <EditExpenseForm expense={editingExpense} onCancel={handleCancelEdit} />;
     }
 
-    if (!filteredExpenses.length) return <div>Brak wydatków</div>;
+    if (!paginatedExpenses.length) return <div>Brak wydatków</div>;
 
     return (
         <div>
@@ -55,11 +67,11 @@ export default function ExpensesList() {
                 </tr>
                 </thead>
                 <tbody>
-                {filteredExpenses.map((expense) => (
+                {paginatedExpenses.map((expense) => (
                     <Expense
                         key={expense.id}
                         {...expense}
-                        onDelete={() => deleteExpense(expense.id)}
+                        onDelete={() => handleDelete(expense.id)}
                         onEdit={() => handleEdit(expense)}
                         onExpenseClick={() => selectExpense(expense)}
                     />
@@ -67,8 +79,9 @@ export default function ExpensesList() {
                 </tbody>
             </table>
             {selectedExpense && (
-                <ExpenseDetails expense={selectedExpense} onClose={clearSelectedExpense}/>
+                <ExpenseDetails expense={selectedExpense} onClose={clearSelectedExpense} />
             )}
+            <Pagination />
         </div>
     );
 }
