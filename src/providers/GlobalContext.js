@@ -1,6 +1,6 @@
 'use client';
 
-import React, {createContext, useContext, useEffect, useState} from 'react';
+import React, {createContext, useCallback, useContext, useEffect, useMemo, useState} from 'react';
 
 const GlobalContext = createContext();
 
@@ -23,7 +23,7 @@ export default function GlobalProvider({ children }) {
         currentPage * itemsPerPage
     );
 
-    const addExpense = async (expense) => {
+    const addExpense = useCallback(async (expense) => {
         try {
             const response = await fetch('http://localhost:5000/expenses/', {
                 method: 'POST',
@@ -37,7 +37,7 @@ export default function GlobalProvider({ children }) {
         } catch (err) {
             addNotification(`Błąd dodawania wydatku: ${err.message}`);
         }
-    };
+    }, []);
 
     const editExpense = async (id, updatedExpense) => {
         try {
@@ -57,7 +57,7 @@ export default function GlobalProvider({ children }) {
         }
     };
 
-    const deleteExpense = async (id) => {
+    const deleteExpense = useCallback(async (id) => {
         try {
             const response = await fetch(`http://localhost:5000/expenses/${id}`, {
                 method: 'DELETE',
@@ -68,7 +68,7 @@ export default function GlobalProvider({ children }) {
         } catch (err) {
             addNotification(`Błąd usuwania wydatku: ${err.message}`);
         }
-    };
+    }, []);
 
     const searchExpenses = async ({ category, minAmount, maxAmount, date }) => {
         try {
@@ -111,6 +111,10 @@ export default function GlobalProvider({ children }) {
     const setCategory = (category) => setSelectedCategory(category);
     const setDate = (date) => setSelectedDate(date);
 
+    const totalExpensesAmount = useMemo(() => {
+        return expenses.reduce((sum, expense) => sum + expense.amount, 0);
+    }, [expenses]);
+
     return (
         <GlobalContext.Provider
             value={{
@@ -135,6 +139,7 @@ export default function GlobalProvider({ children }) {
                 removeNotification,
                 setCurrentPage,
                 setItemsPerPage,
+                totalExpensesAmount,
             }}
         >
             {children}

@@ -5,6 +5,7 @@ import GlobalProvider from "./providers/GlobalContext";
 import AddExpenseForm from "./components/AddExpenseForm";
 import Filter from "./components/Filter";
 import NotificationSystem from "./components/NotificationSystem";
+import Summary from "./components/Summary";
 
 export default function App() {
     return (
@@ -16,6 +17,7 @@ export default function App() {
                 <AddExpenseForm />
                 <Filter />
                 <ExpenseList />
+                <Summary />
             </div>
         </GlobalProvider>
     );

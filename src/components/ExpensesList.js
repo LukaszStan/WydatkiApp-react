@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
+import React, {useRef, useLayoutEffect, useState, useEffect, useMemo} from 'react';
 import { useGlobalContext } from '../providers/GlobalContext';
 import Expense from './Expense';
 import ExpenseDetails from './ExpenseDetails';
