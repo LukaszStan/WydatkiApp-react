@@ -28,9 +28,11 @@ export default function ExpenseFetcher() {
         };
 
         fetchExpenses();
-    }, [setExpenses, addNotification]);
+
+    }, []);
 
     if (loading) return <div>Ładowanie wydatków...</div>;
     if (error) return <div>Wystąpił błąd: {error}</div>;
+
     return null;
 }
