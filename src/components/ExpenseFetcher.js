@@ -5,7 +5,7 @@ import { useGlobalContext } from '../providers/GlobalContext';
 export default function ExpenseFetcher() {
     const {
         setExpenses,
-        addNotification
+        addNotification,
     } = useGlobalContext();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);

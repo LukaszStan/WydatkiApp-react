@@ -1,15 +1,15 @@
 'use client';
-import React from 'react';
+import React, {memo} from 'react';
 import { FaRegTrashCan } from "react-icons/fa6";
 import {FaEdit} from "react-icons/fa";
 
-export default function Expense({title, amount, category, date, onDelete, onEdit, onExpenseClick}) {
+const Expense =({expense, onDelete, onEdit, onExpenseClick}) => {
     return (
         <tr onClick={onExpenseClick}>
-            <td>{title}</td>
-            <td>{amount}</td>
-            <td>{category}</td>
-            <td>{date}</td>
+            <td>{expense.title}</td>
+            <td>{expense.amount}</td>
+            <td>{expense.category}</td>
+            <td>{expense.date}</td>
             <td>
                 <FaEdit className="icon" onClick={(e) => {
                     e.stopPropagation();
@@ -31,3 +31,5 @@ export default function Expense({title, amount, category, date, onDelete, onEdit
         </tr>
     );
 }
+
+export default memo(Expense);

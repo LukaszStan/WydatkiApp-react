@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useRef, useLayoutEffect, useState, useEffect, useMemo} from 'react';
+import React, { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import { useGlobalContext } from '../providers/GlobalContext';
 import Expense from './Expense';
 import ExpenseDetails from './ExpenseDetails';
@@ -70,7 +70,7 @@ export default function ExpensesList() {
                 {paginatedExpenses.map((expense) => (
                     <Expense
                         key={expense.id}
-                        {...expense}
+                        expense={expense}
                         onDelete={() => handleDelete(expense.id)}
                         onEdit={() => handleEdit(expense)}
                         onExpenseClick={() => selectExpense(expense)}
