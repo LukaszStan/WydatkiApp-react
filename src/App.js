@@ -6,19 +6,26 @@ import AddExpenseForm from "./components/AddExpenseForm";
 import Filter from "./components/Filter";
 import NotificationSystem from "./components/NotificationSystem";
 import Summary from "./components/Summary";
+import ErrorBoundary from "./components/ErrorBoundary";
+import {Suspense} from "react";
+import {ClipLoader} from "react-spinners";
 
 export default function App() {
     return (
-        <GlobalProvider>
-            <div className="App">
-                <h1>Aplikacja do śledzenia wydatków</h1>
-                <ExpenseFetcher />
-                <NotificationSystem />
-                <AddExpenseForm />
-                <Filter />
-                <ExpenseList />
-                <Summary />
-            </div>
-        </GlobalProvider>
+        <ErrorBoundary>
+            <GlobalProvider>
+                <div className="App">
+                    <h1>Aplikacja do śledzenia wydatków</h1>
+                    <NotificationSystem />
+                    <AddExpenseForm />
+                    <Filter />
+                    <Suspense fallback={<ClipLoader size={50} color="#123abc" />}>
+                        <ExpenseFetcher />
+                        <ExpenseList />
+                    </Suspense>
+                    <Summary />
+                </div>
+            </GlobalProvider>
+        </ErrorBoundary>
     );
 }

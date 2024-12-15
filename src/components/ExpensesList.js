@@ -54,6 +54,10 @@ export default function ExpensesList() {
 
     if (!paginatedExpenses.length) return <div>Brak wydatków</div>;
 
+//    const TestError = () => {
+//        throw new Error("Celowy błąd testowy w ExpensesList");
+//    };
+
     return (
         <div>
             <table ref={tableRef} style={{ maxHeight: '400px', overflowY: 'auto' }}>
